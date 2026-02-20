@@ -15,6 +15,12 @@ import {
   Truck,
   Pill,
   ShoppingCart,
+  Stethoscope,
+  Mail,
+  Inbox,
+  Send,
+  FileEdit,
+  Trash2,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -30,70 +36,47 @@ export const AppLayout = () => {
     navigate('/login');
   };
 
-  const navItems = [
+  const navGroups = [
     {
-      path: '/dashboard',
-      label: 'Dashboard',
-      icon: LayoutDashboard,
-      show: true,
+      label: 'Administration',
+      items: [
+        { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, show: true },
+        { path: '/users', label: 'Users', icon: Users, show: hasPermission('USER_READ') },
+        { path: '/roles', label: 'Roles', icon: Shield, show: hasPermission('ROLE_READ') },
+        { path: '/permissions', label: 'Permissions', icon: Key, show: true },
+        { path: '/role-permission-matrix', label: 'Role-Permission Matrix', icon: Grid3x3, show: hasPermission('ROLE_ASSIGN_PERMISSIONS') },
+      ],
     },
     {
-      path: '/users',
-      label: 'Users',
-      icon: Users,
-      show: hasPermission('USER_READ'),
+      label: 'Lookups',
+      items: [
+        { path: '/master/product-categories', label: 'Product Categories', icon: Package, show: hasPermission('MASTER_PRODUCT_VIEW') },
+        { path: '/master/manufacturers', label: 'Manufacturers', icon: Building2, show: hasPermission('MASTER_MANUFACTURER_VIEW') },
+        { path: '/master/suppliers', label: 'Suppliers', icon: Truck, show: hasPermission('MASTER_SUPPLIER_VIEW') },
+        { path: '/master/dosage-forms', label: 'Dosage Forms', icon: Pill, show: hasPermission('MASTER_DOSAGEFORM_VIEW') },
+      ],
     },
     {
-      path: '/roles',
-      label: 'Roles',
-      icon: Shield,
-      show: hasPermission('ROLE_READ'),
+      label: 'Master Data',
+      items: [
+        { path: '/master/products', label: 'Products', icon: ShoppingCart, show: hasPermission('MASTER_PRODUCT_VIEW') },
+        { path: '/master/doctors', label: 'Doctors', icon: Stethoscope, show: hasPermission('MASTER_DOCTOR_VIEW') },
+      ],
     },
     {
-      path: '/permissions',
-      label: 'Permissions',
-      icon: Key,
-      show: true,
-    },
-    {
-      path: '/role-permission-matrix',
-      label: 'Role-Permission Matrix',
-      icon: Grid3x3,
-      show: hasPermission('ROLE_ASSIGN_PERMISSIONS'),
-    },
-    {
-      path: '/master/product-categories',
-      label: 'Product Categories',
-      icon: Package,
-      show: hasPermission('MASTER_PRODUCT_VIEW'),
-    },
-    {
-      path: '/master/manufacturers',
-      label: 'Manufacturers',
-      icon: Building2,
-      show: hasPermission('MASTER_MANUFACTURER_VIEW'),
-    },
-    {
-      path: '/master/suppliers',
-      label: 'Suppliers',
-      icon: Truck,
-      show: hasPermission('MASTER_SUPPLIER_VIEW'),
-    },
-    {
-      path: '/master/dosage-forms',
-      label: 'Dosage Forms',
-      icon: Pill,
-      show: hasPermission('MASTER_DOSAGEFORM_VIEW'),
-    },
-    {
-      path: '/master/products',
-      label: 'Products',
-      icon: ShoppingCart,
-      show: hasPermission('MASTER_PRODUCT_VIEW'),
+      label: 'Email',
+      items: [
+        { path: '/email/INBOX', label: 'Inbox', icon: Inbox, show: hasPermission('EMAIL_ACCESS') },
+        { path: '/email/Sent', label: 'Sent', icon: Send, show: hasPermission('EMAIL_ACCESS') },
+        { path: '/email/drafts', label: 'Drafts', icon: FileEdit, show: hasPermission('EMAIL_ACCESS') },
+        { path: '/email/Trash', label: 'Trash', icon: Trash2, show: hasPermission('EMAIL_ACCESS') },
+      ],
     },
   ];
 
-  const visibleNavItems = navItems.filter((item) => item.show);
+  const visibleNavGroups = navGroups
+    .map((group) => ({ ...group, items: group.items.filter((item) => item.show) }))
+    .filter((group) => group.items.length > 0);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -115,26 +98,36 @@ export const AppLayout = () => {
             </div>
           </div>
 
-          <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-            {visibleNavItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = location.pathname === item.path;
-
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                    isActive
-                      ? 'bg-blue-600 text-white'
-                      : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-                  }`}
-                >
-                  <Icon className="w-5 h-5" />
-                  <span className="font-medium">{item.label}</span>
-                </Link>
-              );
-            })}
+          <nav className="flex-1 p-4 overflow-y-auto space-y-1">
+            {visibleNavGroups.map((group, groupIndex) => (
+              <div key={group.label}>
+                {groupIndex > 0 && <div className="border-t border-slate-700 my-3" />}
+                <p className="px-4 pt-1 pb-2 text-xs font-semibold uppercase tracking-widest text-slate-500 select-none">
+                  {group.label}
+                </p>
+                <div className="space-y-1">
+                  {group.items.map((item) => {
+                    const Icon = item.icon;
+                    const isActive = location.pathname === item.path ||
+                      (item.path.startsWith('/email/') && location.pathname.startsWith(item.path.split('/').slice(0, 3).join('/')));
+                    return (
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        className={`flex items-center space-x-3 px-4 py-2.5 rounded-lg transition-colors ${
+                          isActive
+                            ? 'bg-blue-600 text-white'
+                            : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                        }`}
+                      >
+                        <Icon className="w-5 h-5 shrink-0" />
+                        <span className="font-medium text-sm">{item.label}</span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </nav>
 
           <div className="p-4 border-t border-slate-700">

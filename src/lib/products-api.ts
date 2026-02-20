@@ -20,12 +20,9 @@ import type {
 export const productsApi = {
   getAll: async (params?: {
     search?: string;
-    status?: string;
     lifecycleStatus?: string;
     categoryCode?: string;
     manufacturerCode?: string;
-    supplierCode?: string;
-    dosageFormCode?: string;
     page?: number;
     pageSize?: number;
     sortBy?: string;

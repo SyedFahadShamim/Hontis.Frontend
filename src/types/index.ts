@@ -337,7 +337,7 @@ export interface CreateProductRequest {
   productPriceCurrent: number;
   priceEffectiveFrom?: string;
   lifecycleStatus: string;
-  skuPriceCode?: string;
+  skuPriceCode: string;
 }
 
 export interface UpdateProductRequest {
@@ -426,4 +426,200 @@ export interface PriceHistoryResponse {
   notes: string | null;
   createdOn: string;
   createdBy: string | null;
+}
+
+export interface DoctorListResponse {
+  doctorId: number;
+  doctorCode: string;
+  doctorName: string;
+  specialityCode: string;
+  specialityName: string | null;
+  doctorStatusCode: string;
+  doctorStatusName: string | null;
+  primaryCityCode: string | null;
+  primaryCityName: string | null;
+  phone: string | null;
+  status: string;
+  updatedOn: string | null;
+}
+
+export interface DoctorDetailResponse {
+  doctorId: number;
+  doctorCode: string;
+  doctorName: string;
+  specialityCode: string;
+  specialityName: string | null;
+  doctorStatusCode: string;
+  doctorStatusName: string | null;
+  primaryCityCode: string | null;
+  primaryCityName: string | null;
+  phone: string | null;
+  email: string | null;
+  onboardedOn: string | null;
+  firstContactBy: string | null;
+  notes: string | null;
+  status: string;
+  createdOn: string;
+  createdBy: string | null;
+  updatedOn: string | null;
+  updatedBy: string | null;
+}
+
+export interface CreateDoctorRequest {
+  doctorCode: string;
+  doctorName: string;
+  specialityCode: string;
+  doctorStatusCode: string;
+  primaryCityCode?: string;
+  phone?: string;
+  email?: string;
+  onboardedOn?: string;
+  firstContactBy?: string;
+  notes?: string;
+  status: string;
+}
+
+export interface UpdateDoctorRequest {
+  doctorCode: string;
+  doctorName: string;
+  specialityCode: string;
+  doctorStatusCode: string;
+  primaryCityCode?: string;
+  phone?: string;
+  email?: string;
+  onboardedOn?: string;
+  firstContactBy?: string;
+  notes?: string;
+  status: string;
+}
+
+export interface SpecialityLookupResponse {
+  specialityCode: string;
+  specialityName: string;
+}
+
+export interface DoctorStatusLookupResponse {
+  doctorStatusCode: string;
+  doctorStatusName: string;
+}
+
+export interface GeoRegionLookupResponse {
+  regionCode: string;
+  regionName: string;
+}
+
+export interface GeoCityLookupResponse {
+  cityCode: string;
+  cityName: string;
+  regionCode: string | null;
+}
+
+export interface GeoBrickLookupResponse {
+  brickCode: string;
+  brickName: string;
+  cityCode: string | null;
+}
+
+export interface EmailFolderDto {
+  name: string;
+  fullName: string;
+  unreadCount: number;
+  totalCount: number;
+}
+
+export interface EmailAttachmentDto {
+  fileName: string;
+  contentType: string;
+  sizeBytes: number;
+}
+
+export interface EmailMessageSummaryDto {
+  id: string;
+  uniqueId: string;
+  folder: string;
+  fromName: string;
+  fromEmail: string;
+  subject: string;
+  previewText: string;
+  date: string;
+  isRead: boolean;
+  hasAttachment: boolean;
+}
+
+export interface EmailMessageDetailDto {
+  id: string;
+  uniqueId: string;
+  folder: string;
+  fromName: string;
+  fromEmail: string;
+  toAddresses: string[];
+  ccAddresses: string[];
+  subject: string;
+  bodyHtml: string | null;
+  bodyText: string | null;
+  date: string;
+  isRead: boolean;
+  attachments: EmailAttachmentDto[];
+  inReplyTo: string | null;
+  messageId: string | null;
+}
+
+export interface EmailPagedResult {
+  items: EmailMessageSummaryDto[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}
+
+export interface SendEmailRequest {
+  to: string[];
+  cc: string[];
+  bcc: string[];
+  subject: string;
+  bodyHtml: string;
+}
+
+export interface ReplyEmailRequest {
+  additionalTo: string[];
+  cc: string[];
+  bodyHtml: string;
+  replyAll: boolean;
+}
+
+export interface ForwardEmailRequest {
+  to: string[];
+  cc: string[];
+  bodyHtml: string;
+}
+
+export interface DraftListDto {
+  emailDraftId: number;
+  toRecipients: string;
+  subject: string;
+  createdOn: string;
+  updatedOn: string | null;
+}
+
+export interface DraftDetailDto {
+  emailDraftId: number;
+  toRecipients: string;
+  ccRecipients: string | null;
+  bccRecipients: string | null;
+  subject: string;
+  bodyHtml: string | null;
+  inReplyToMessageId: string | null;
+  forwardOfMessageId: string | null;
+  createdOn: string;
+  updatedOn: string | null;
+}
+
+export interface SaveDraftRequest {
+  toRecipients: string;
+  ccRecipients?: string;
+  bccRecipients?: string;
+  subject: string;
+  bodyHtml?: string;
+  inReplyToMessageId?: string;
+  forwardOfMessageId?: string;
 }

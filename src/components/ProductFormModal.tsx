@@ -213,8 +213,8 @@ export const ProductFormModal = ({ productId, onClose, onSuccess }: ProductFormM
               >
                 <option value="Draft">Draft</option>
                 <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
                 <option value="Discontinued">Discontinued</option>
-                <option value="Cancelled">Cancelled</option>
               </select>
             </div>
           </div>

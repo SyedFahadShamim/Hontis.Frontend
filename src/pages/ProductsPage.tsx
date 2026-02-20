@@ -20,8 +20,8 @@ import type { ProductListResponse } from '../types';
 const LIFECYCLE_COLORS: Record<string, string> = {
   Draft: 'bg-yellow-100 text-yellow-800',
   Active: 'bg-green-100 text-green-800',
-  Discontinued: 'bg-orange-100 text-orange-800',
-  Cancelled: 'bg-red-100 text-red-800',
+  Inactive: 'bg-gray-100 text-gray-800',
+  Discontinued: 'bg-red-100 text-red-800',
 };
 
 export const ProductsPage = () => {
@@ -53,7 +53,7 @@ export const ProductsPage = () => {
     queryFn: () =>
       productsApi.getAll({
         search: searchTerm || undefined,
-        status: statusFilter || undefined,
+        lifecycleStatus: statusFilter || undefined,
         page,
         pageSize,
         sortBy: sortBy || undefined,
@@ -191,8 +191,8 @@ export const ProductsPage = () => {
             <option value="">All Statuses</option>
             <option value="Draft">Draft</option>
             <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
             <option value="Discontinued">Discontinued</option>
-            <option value="Cancelled">Cancelled</option>
           </select>
         </div>
       </div>
@@ -306,8 +306,8 @@ export const ProductsPage = () => {
                         >
                           <option value="Draft">Draft</option>
                           <option value="Active">Active</option>
+                          <option value="Inactive">Inactive</option>
                           <option value="Discontinued">Discontinued</option>
-                          <option value="Cancelled">Cancelled</option>
                         </select>
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">

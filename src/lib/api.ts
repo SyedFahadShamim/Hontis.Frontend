@@ -32,6 +32,16 @@ import type {
   DosageFormDetailResponse,
   CreateDosageFormRequest,
   UpdateDosageFormRequest,
+  EmailFolderDto,
+  EmailMessageSummaryDto,
+  EmailMessageDetailDto,
+  EmailPagedResult,
+  SendEmailRequest,
+  ReplyEmailRequest,
+  ForwardEmailRequest,
+  DraftListDto,
+  DraftDetailDto,
+  SaveDraftRequest,
 } from '../types';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
@@ -275,6 +285,97 @@ export const suppliersApi = {
   },
   delete: async (id: number): Promise<void> => {
     await apiClient.delete(`/suppliers/${id}`);
+  },
+};
+
+export const emailApi = {
+  getFolders: async (): Promise<EmailFolderDto[]> => {
+    const response = await apiClient.get<EmailFolderDto[]>('/email/folders');
+    return response.data;
+  },
+
+  getMessages: async (params: {
+    folder?: string;
+    page?: number;
+    pageSize?: number;
+    search?: string;
+    unreadOnly?: boolean;
+    hasAttachment?: boolean;
+  }): Promise<EmailPagedResult> => {
+    const response = await apiClient.get<EmailPagedResult>('/email/messages', { params });
+    return response.data;
+  },
+
+  getMessage: async (folder: string, uniqueId: string): Promise<EmailMessageDetailDto> => {
+    const response = await apiClient.get<EmailMessageDetailDto>(
+      `/email/messages/${encodeURIComponent(folder)}/${uniqueId}`
+    );
+    return response.data;
+  },
+
+  send: async (data: SendEmailRequest): Promise<void> => {
+    await apiClient.post('/email/send', data);
+  },
+
+  reply: async (folder: string, uniqueId: string, data: ReplyEmailRequest): Promise<void> => {
+    await apiClient.post(
+      `/email/reply/${encodeURIComponent(folder)}/${uniqueId}`,
+      data
+    );
+  },
+
+  forward: async (folder: string, uniqueId: string, data: ForwardEmailRequest): Promise<void> => {
+    await apiClient.post(
+      `/email/forward/${encodeURIComponent(folder)}/${uniqueId}`,
+      data
+    );
+  },
+
+  deleteMessage: async (folder: string, uniqueId: string): Promise<void> => {
+    await apiClient.delete(`/email/messages/${encodeURIComponent(folder)}/${uniqueId}`);
+  },
+
+  markRead: async (folder: string, uniqueId: string, isRead: boolean): Promise<void> => {
+    await apiClient.patch(
+      `/email/messages/${encodeURIComponent(folder)}/${uniqueId}/read`,
+      { isRead }
+    );
+  },
+
+  moveMessage: async (folder: string, uniqueId: string, targetFolder: string): Promise<void> => {
+    await apiClient.patch(
+      `/email/messages/${encodeURIComponent(folder)}/${uniqueId}/move`,
+      { targetFolder }
+    );
+  },
+
+  getAttachmentUrl: (folder: string, uniqueId: string, fileName: string): string => {
+    const base = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    return `${base}/api/email/messages/${encodeURIComponent(folder)}/${uniqueId}/attachments/${encodeURIComponent(fileName)}`;
+  },
+
+  getDrafts: async (): Promise<DraftListDto[]> => {
+    const response = await apiClient.get<DraftListDto[]>('/email/drafts');
+    return response.data;
+  },
+
+  getDraft: async (id: number): Promise<DraftDetailDto> => {
+    const response = await apiClient.get<DraftDetailDto>(`/email/drafts/${id}`);
+    return response.data;
+  },
+
+  saveDraft: async (data: SaveDraftRequest): Promise<DraftDetailDto> => {
+    const response = await apiClient.post<DraftDetailDto>('/email/drafts', data);
+    return response.data;
+  },
+
+  updateDraft: async (id: number, data: SaveDraftRequest): Promise<DraftDetailDto> => {
+    const response = await apiClient.put<DraftDetailDto>(`/email/drafts/${id}`, data);
+    return response.data;
+  },
+
+  deleteDraft: async (id: number): Promise<void> => {
+    await apiClient.delete(`/email/drafts/${id}`);
   },
 };
 

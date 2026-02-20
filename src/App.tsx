@@ -12,6 +12,8 @@ import { ManufacturersPage } from './pages/ManufacturersPage';
 import { SuppliersPage } from './pages/SuppliersPage';
 import { DosageFormsPage } from './pages/DosageFormsPage';
 import { ProductsPage } from './pages/ProductsPage';
+import { DoctorsPage } from './pages/DoctorsPage';
+import { EmailPage } from './pages/EmailPage';
 import { AppLayout } from './components/AppLayout';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
@@ -109,6 +111,38 @@ function App() {
           element={
             <ProtectedRoute requiredPermission="MASTER_PRODUCT_VIEW">
               <ProductsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="master/doctors"
+          element={
+            <ProtectedRoute requiredPermission="MASTER_DOCTOR_VIEW">
+              <DoctorsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="email/drafts"
+          element={
+            <ProtectedRoute requiredPermission="EMAIL_ACCESS">
+              <EmailPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="email/:folder"
+          element={
+            <ProtectedRoute requiredPermission="EMAIL_ACCESS">
+              <EmailPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="email/:folder/:messageId"
+          element={
+            <ProtectedRoute requiredPermission="EMAIL_ACCESS">
+              <EmailPage />
             </ProtectedRoute>
           }
         />
