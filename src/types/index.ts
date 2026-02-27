@@ -623,3 +623,123 @@ export interface SaveDraftRequest {
   inReplyToMessageId?: string;
   forwardOfMessageId?: string;
 }
+
+export interface RuleLevelLookupResponse {
+  ruleLevelCode: string;
+  ruleLevelName: string;
+}
+
+export interface AllocationTypeLookupResponse {
+  allocationTypeCode: string;
+  allocationTypeName: string;
+}
+
+export interface RuleStatusLookupResponse {
+  ruleStatusCode: string;
+  ruleStatusName: string;
+}
+
+export interface PriceTypeLookupResponse {
+  priceTypeCode: string;
+  priceTypeName: string;
+}
+
+export interface ClinicTypeLookupResponse {
+  clinicTypeCode: string;
+  clinicTypeName: string;
+}
+
+export interface TaxTypeLookupResponse {
+  taxTypeCode: string;
+  taxTypeName: string;
+}
+
+export interface AttributionRuleListResponse {
+  ruleId: number;
+  ruleCode: string;
+  ruleName: string;
+  ruleLevelCode: string;
+  allocationTypeCode: string;
+  ruleStatusCode: string;
+  dcCode?: string | null;
+  customerCode?: string | null;
+  brickCode?: string | null;
+  cityCode?: string | null;
+  regionCode?: string | null;
+  appliesToAllProducts: boolean;
+  hontisProductCode?: string | null;
+  percentPolicyCode?: string | null;
+  effectiveFrom: string;
+  effectiveTo?: string | null;
+  priority: number;
+  approvedBy?: string | null;
+  approvedOn?: string | null;
+  createdOn: string;
+  updatedOn?: string | null;
+}
+
+export interface AttributionRuleDetailResponse extends AttributionRuleListResponse {
+  notes?: string | null;
+  createdBy?: string | null;
+  updatedBy?: string | null;
+  allocations: AttributionAllocationResponse[];
+}
+
+export interface AttributionAllocationResponse {
+  allocationId: number;
+  ruleId: number;
+  doctorId: number;
+  doctorCode?: string | null;
+  doctorName?: string | null;
+  allocationPercent?: number | null;
+  notes?: string | null;
+  createdOn: string;
+  createdBy?: string | null;
+}
+
+export interface AttributionRuleQueryParams {
+  search?: string;
+  ruleLevelCode?: string;
+  allocationTypeCode?: string;
+  ruleStatusCode?: string;
+  productCode?: string;
+  page?: number;
+  pageSize?: number;
+  sortBy?: string;
+  sortDir?: string;
+}
+
+export interface CreateAttributionRuleRequest {
+  ruleCode: string;
+  ruleName: string;
+  ruleLevelCode: string;
+  allocationTypeCode: string;
+  ruleStatusCode: string;
+  dcCode?: string | null;
+  customerCode?: string | null;
+  brickCode?: string | null;
+  cityCode?: string | null;
+  regionCode?: string | null;
+  appliesToAllProducts: boolean;
+  hontisProductCode?: string | null;
+  percentPolicyCode?: string | null;
+  effectiveFrom: string;
+  effectiveTo?: string | null;
+  priority: number;
+  approvedBy?: string | null;
+  approvedOn?: string | null;
+  notes?: string | null;
+}
+
+export interface UpdateAttributionRuleRequest extends CreateAttributionRuleRequest {}
+
+export interface CreateAttributionAllocationRequest {
+  doctorId: number;
+  allocationPercent?: number | null;
+  notes?: string | null;
+}
+
+export interface UpdateAttributionAllocationRequest {
+  allocationPercent?: number | null;
+  notes?: string | null;
+}

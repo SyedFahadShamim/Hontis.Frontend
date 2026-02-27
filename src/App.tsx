@@ -14,6 +14,11 @@ import { DosageFormsPage } from './pages/DosageFormsPage';
 import { ProductsPage } from './pages/ProductsPage';
 import { DoctorsPage } from './pages/DoctorsPage';
 import { EmailPage } from './pages/EmailPage';
+import { AttributionOverviewPage } from './pages/AttributionOverviewPage';
+import { AttributionRulesPage } from './pages/AttributionRulesPage';
+import { AttributionAllocationsPage } from './pages/AttributionAllocationsPage';
+import { AttributionResultsPage } from './pages/AttributionResultsPage';
+import { AttributionExceptionsPage } from './pages/AttributionExceptionsPage';
 import { AppLayout } from './components/AppLayout';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
@@ -119,6 +124,46 @@ function App() {
           element={
             <ProtectedRoute requiredPermission="MASTER_DOCTOR_VIEW">
               <DoctorsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="attribution/overview"
+          element={
+            <ProtectedRoute requiredPermission="MASTER_DOCTOR_VIEW">
+              <AttributionOverviewPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="attribution/rules"
+          element={
+            <ProtectedRoute requiredPermission="MASTER_DOCTOR_VIEW">
+              <AttributionRulesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="attribution/allocations"
+          element={
+            <ProtectedRoute requiredPermission="MASTER_DOCTOR_VIEW">
+              <AttributionAllocationsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="attribution/results"
+          element={
+            <ProtectedRoute requiredPermission="MASTER_DOCTOR_VIEW">
+              <AttributionResultsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="attribution/exceptions"
+          element={
+            <ProtectedRoute requiredPermission="MASTER_DOCTOR_VIEW">
+              <AttributionExceptionsPage />
             </ProtectedRoute>
           }
         />

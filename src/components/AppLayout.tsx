@@ -21,6 +21,10 @@ import {
   Send,
   FileEdit,
   Trash2,
+  Network,
+  ListChecks,
+  GitMerge,
+  AlertTriangle,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -61,6 +65,16 @@ export const AppLayout = () => {
       items: [
         { path: '/master/products', label: 'Products', icon: ShoppingCart, show: hasPermission('MASTER_PRODUCT_VIEW') },
         { path: '/master/doctors', label: 'Doctors', icon: Stethoscope, show: hasPermission('MASTER_DOCTOR_VIEW') },
+      ],
+    },
+    {
+      label: 'Sales Attribution',
+      items: [
+        { path: '/attribution/overview', label: 'Overview', icon: Network, show: hasPermission('MASTER_DOCTOR_VIEW') },
+        { path: '/attribution/rules', label: 'Rules', icon: GitMerge, show: hasPermission('MASTER_DOCTOR_VIEW') },
+        { path: '/attribution/allocations', label: 'Allocations', icon: ListChecks, show: hasPermission('MASTER_DOCTOR_VIEW') },
+        { path: '/attribution/results', label: 'Results', icon: ShoppingCart, show: hasPermission('MASTER_DOCTOR_VIEW') },
+        { path: '/attribution/exceptions', label: 'Exceptions', icon: AlertTriangle, show: hasPermission('MASTER_DOCTOR_VIEW') },
       ],
     },
     {
